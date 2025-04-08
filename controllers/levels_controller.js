@@ -1,39 +1,43 @@
 /*
-  This is the controller for user handling
+  This is the controller for all levels handling
 */
 const Level1 = require('../models/level1_model');
-
+const Level2 = require('../models/level2_model');
+const Level3 = require('../models/level3_model');
+const levels_model = [Level1,Level2,Level3];
 // add a result
 const add_result = async (req, res) =>{
-  const {NPC, acc ,time} = req.body;
+  const {level, NPC, acc ,time} = req.body;
   // add to the database
   try {
-    const user = await Level1.create({ NPC, acc, time});
+    const user = await levels_model[parseInt(level)-1].create({ NPC, acc, time});
     res.status(200).json({status: "success" });
+    console.log("level " + level + " result received")
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 }
 
-// get all result
-const get_results = async (req, res) => {
-  const results = await Level1.find({}).sort({createdAt: -1});
-
-  res.status(200).json(results);
-}
-
 // get avg info
 const get_avg = async (req, res) => {
-  const results = await Level1.find({}).sort({createdAt: -1});
+  if (req.params.levels<1 || req.params.levels>3) {
+    res.status(400).json({error : "no such a level"});
+  }
+  console.log("level " + req.params.levels + " result fetched")
+  const results = await levels_model[parseInt(req.params.levels)-1].find({}).sort({createdAt: -1});
   var acc=[];
   var avg_acc=0;
-  for (var t of results){
-    avg_acc+=t.acc;
-    acc.push(t.acc);
+  var time=[];
+  var avg_time=0;
+  for (var result of results){
+    avg_acc+=result.acc;
+    acc.push(result.acc);
+    avg_time+=result.time;
+    time.push(result.time);
   }
   avg_acc/=acc.length;
-  //var NPC=[[]];
-  res.status(200).json({avg:avg_acc});
+  avg_time/=time.length;
+  res.status(200).json({avg_acc:avg_acc, avg_time:avg_time});
 }
 
 
@@ -193,6 +197,5 @@ const permission = async (req,res) => {
 
 module.exports = {
   add_result,
-  get_results,
   get_avg
 }

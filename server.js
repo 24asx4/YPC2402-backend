@@ -7,7 +7,7 @@ const fs = require("fs");
 
 mongoose.set('strictQuery', true)
 // routes
-const level1 = require('./routes/level1.js')
+const levels = require('./routes/levels.js')
 
 // express app
 const app = express()
@@ -22,7 +22,7 @@ app.use(sessions({
 
 app.use(express.json())
 
-app.use('/api/level1', level1)
+app.use('/api/levels', levels)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
