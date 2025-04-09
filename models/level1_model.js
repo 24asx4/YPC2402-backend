@@ -6,9 +6,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const level1Schema = new Schema({
-  NPC: {
-    type: Array,
-  },
   acc: {
     type: Number,
     required: true

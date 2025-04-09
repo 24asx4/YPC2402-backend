@@ -7,10 +7,10 @@ const Level3 = require('../models/level3_model');
 const levels_model = [Level1,Level2,Level3];
 // add a result
 const add_result = async (req, res) =>{
-  const {level, NPC, acc ,time} = req.body;
+  const {level, acc ,time} = req.body;
   // add to the database
   try {
-    const user = await levels_model[parseInt(level)-1].create({ NPC, acc, time});
+    const user = await levels_model[parseInt(level)-1].create({ acc, time});
     res.status(200).json({status: "success" });
     console.log("level " + level + " result received")
   } catch (error) {
