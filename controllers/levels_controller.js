@@ -7,10 +7,10 @@ const Level3 = require('../models/level3_model');
 const levels_model = [Level1,Level2,Level3];
 // add a result
 const add_result = async (req, res) =>{
-  const {level, acc ,time} = req.body;
+  const {level, acc ,time, difficulty} = req.body;
   // add to the database
   try {
-    const user = await levels_model[parseInt(level)-1].create({ acc, time});
+    const user = await levels_model[parseInt(level)-1].create({ acc, time, difficulty});
     res.status(200).json({status: "success" });
     console.log("level " + level + " result received")
   } catch (error) {
@@ -24,7 +24,7 @@ const get_avg = async (req, res) => {
     res.status(400).json({error : "no such a level"});
   }
   console.log("level " + req.params.levels + " result fetched")
-  const results = await levels_model[parseInt(req.params.levels)-1].find({}).sort({createdAt: -1});
+  const results = await levels_model[parseInt(req.params.levels)-1].find({difficulty: req.params.diff}).sort({createdAt: -1});
   var acc=[];
   var avg_acc=0;
   var time=[];

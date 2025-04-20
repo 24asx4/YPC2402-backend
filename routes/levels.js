@@ -12,7 +12,7 @@ const router = express.Router()
 // add a result
 router.post('/add_result', add_result);
 // get avg results
-router.get('/get_avg/:levels', get_avg);
+router.get('/get_avg/:levels/:diff', get_avg);
 
 
 module.exports = router

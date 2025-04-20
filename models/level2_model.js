@@ -13,6 +13,10 @@ const level2Schema = new Schema({
   time: {
     type: Number,
     required: true
+  },
+  difficulty: {
+    type: String,
+    required: true
   }
 }, { timestamps: true })
 
